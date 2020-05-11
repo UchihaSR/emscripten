@@ -526,7 +526,7 @@ class RunnerCore(unittest.TestCase, metaclass=RunnerMeta):
       if value == 1:
         ret += ['-s', key]
       else:
-        ret += ['-s', '{}={}'.format(key, json.dumps(value))]
+        ret += ['-s', f'{key}={json.dumps(value)}']
     return ret
 
   def get_dir(self):
@@ -656,7 +656,7 @@ class RunnerCore(unittest.TestCase, metaclass=RunnerMeta):
     stderr = self.in_dir('stderr')
     error = None
     if EMTEST_VERBOSE:
-      print(f"Running '{filename}' under '{engine}'")
+      print(f"Running '{filename}' under '{shared.shlex_join(engine)}'")
     try:
       jsrun.run_js(filename, engine, args,
                    stdout=open(stdout, 'w'),

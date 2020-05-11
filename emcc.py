@@ -319,7 +319,7 @@ def expand_byte_size_suffixes(value):
   many bytes that is and returns it as an integer.
   """
   value = value.strip()
-  match = re.match(r'^(\d+)\s*([kmgt]?b)?$', value, re.I)
+  match = re.match(r'^(\d+)\s*([kmgtKMGT]?[bB])?$', value, re.I)
   if not match:
     exit_with_error("invalid byte size `%s`.  Valid suffixes are: kb, mb, gb, tb" % value)
   value, suffix = match.groups()
@@ -361,7 +361,7 @@ def apply_settings(changes):
     # In those settings fields that represent amount of memory, translate suffixes to multiples of 1024.
     if key in ('TOTAL_STACK', 'INITIAL_MEMORY', 'MEMORY_GROWTH_LINEAR_STEP', 'MEMORY_GROWTH_GEOMETRIC_STEP',
                'GL_MAX_TEMP_BUFFER_SIZE', 'MAXIMUM_MEMORY', 'DEFAULT_PTHREAD_STACK_SIZE'):
-      value = str(expand_byte_size_suffixes(value))
+      value = str(expand_byte_size_suffixes(parse_value(value)))
 
     if value and value[0] == '@':
       filename = value[1:]
